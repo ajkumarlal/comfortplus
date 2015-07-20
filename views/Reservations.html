@@ -1,0 +1,33 @@
+﻿{% extends '_base.html' %}
+
+{% block title %}{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <h1>Reservation List</h1>
+    <p class="lead">Which would you like to pay for?</p>
+    <a href="/">Go home</a>
+    <br><br>
+    <table class="table table-hover" style="max-width:400px;">
+        <thead>
+            <tr>
+                <th>Reservation Date</th>
+                <th>Cell Phone</th>
+                <th>Pick up Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <td><a href="/charge/{{reservation.IdReservation.toString()}}">{{ reservation.PickUpDate.toISOString().split('T')[0]}}</a></td>
+                <td>{{ reservation.CellPhone }}</td>
+                <td>{{ reservation.PickUp_Address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
