@@ -7,6 +7,7 @@ var express = require('express'),
     config = require('../_config.js'),
     stripe = require('stripe')('sk_test_51aTG9iUrOMeaaxshvv6hgVe');
     var passport = require('../auth');
+    var twilio = require('../twilio')
     
 router.post('/reservation', ensureAuthenticated, function (req, res, next) {
         var tmp = req.body['cellphone'];
@@ -144,11 +145,6 @@ router.post('/stripe', function (req, res, next) {
             });
         });
             
-           
-            
-            
-                             
-            
       
 router.get('/congrats', ensureAuthenticated, function(req, res, next) {
   res.render('congrats', { user: req.user });
@@ -159,6 +155,35 @@ function ensureAuthenticated(req, res, next) {
    req.flash('success', 'You must be signed in to view this page!');
    res.redirect('/login');
 }
+
+// Pass in parameters to the REST API using an object literal notation. The
+// REST client will handle authentication and response serialzation for you.
+
+router.get('/sendsms/:cellphone', ensureAuthenticated, function(req, res, next){
+    
+twilio.sms.messages.create({
+    to:'+17327424867',
+    from:'17323720512',
+    body:'ahoy hoy! Testing Twilio and node.js'
+}, function(error, message) {
+    // The HTTP request to Twilio will run asynchronously. This callback
+    // function will be called when a response is received from Twilio
+    // The "error" variable will contain error information, if any.
+    // If the request was successful, this value will be "falsy"
+    if (!error) {
+        // The second argument to the callback will contain the information
+        // sent back by Twilio for the request. In this case, it is the
+        // information about the text messsage you just sent:
+        console.log('Success! The SID for this SMS message is:');
+        console.log(message.sid);
+ 
+        console.log('Message sent on:');
+        console.log(message.dateCreated);
+    } else {
+        console.log('Oops! There was an error.');
+    }
+});
+});
 
 
 module.exports = router;

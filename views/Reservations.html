@@ -16,6 +16,7 @@
                 <th>Reservation Date</th>
                 <th>Cell Phone</th>
                 <th>Pick up Address</th>
+                <th>Total Amount</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +25,9 @@
                 <td><a href="/charge/{{reservation.IdReservation.toString()}}">{{ reservation.PickUpDate.toISOString().split('T')[0]}}</a></td>
                 <td>{{ reservation.CellPhone }}</td>
                 <td>{{ reservation.PickUp_Address }}</td>
+                <td>{{ reservation.Price }}</td>
+                <td><a href="/sendsms/{{reservation.CellPhone}}"> Send SMS</a></td>
+                
             </tr>
             {% endfor %}
         </tbody>
